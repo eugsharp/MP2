@@ -61,6 +61,7 @@
     "istream": "cpp",
     "string": "cpp",
     "ostream": "cpp",
-    "ios": "cpp"
+    "ios": "cpp",
+    "fstream": "cpp"
   }
 }

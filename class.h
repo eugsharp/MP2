@@ -14,6 +14,7 @@ class Class {
     string days;
     string time;
     string sectionName;
+    Classroom classroom;
     // Teacher teacherName;
     // Student students[30][2]; // first for number, second for name
 
@@ -44,8 +45,16 @@ public:
         return sectionName;
     }
 
-    void createClassroom() { 
-        
+    Classroom getClassroom() { 
+        return classroom;
+    }
+
+    void setClassroom(int rn, string bcn, string ba, string ct, string lt) { 
+        classroom.setRoomNumber(rn);
+        classroom.setBuildingName(bcn);
+        classroom.setBuildingAbbreviation(ba);
+        classroom.setClassroomType(ct);
+        classroom.setLaboratoryType(lt);
     }
 
     // string getClassroomName() {
