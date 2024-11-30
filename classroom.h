@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
-#include "general_input_validation.h"
 #include <fstream>
+#include "teacher.h"
+
+using namespace std;
 
 class Classroom {
 private:
@@ -50,23 +52,23 @@ public:
         return laboratoryType;
     }
 
-    int setRoomNumber(int rn) {
+    void setRoomNumber(int rn) {
         roomNumber = rn;
     }
 
-    string setBuildingName(string bcn) { 
+    void setBuildingName(string bcn) { 
         buildingCompleteName = bcn;
     }
 
-    string setBuildingAbbreviation(string ba) { 
+    void setBuildingAbbreviation(string ba) { 
         buildingAbbreviation = ba;
     }
 
-    string setClassroomType(string ct) { 
+    void setClassroomType(string ct) { 
         classroomType = ct;
     }
 
-    string setLaboratoryType(string lt) {
+    void setLaboratoryType(string lt) {
         laboratoryType = lt;
     }
 };
