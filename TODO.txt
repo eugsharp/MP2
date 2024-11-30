@@ -3,4 +3,4 @@
 
 - consider removing the constructors with the parameters
 
-- fix how full address is made if there are empty entries
+- loop in display and delete student

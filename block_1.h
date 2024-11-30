@@ -9,7 +9,7 @@ void studentNameHandler(Student &student) {
 
     // Prompt for last name
     do {
-        cout << "Enter student's last name: ";
+        cout << "\nEnter student's last name: ";
         getline(cin, lastName);
 
         valid = nameValidation(lastName);
@@ -20,7 +20,7 @@ void studentNameHandler(Student &student) {
 
     // Prompt for given name
     do {
-        cout << "Enter student's given name: ";
+        cout << "\nEnter student's given name: ";
         getline(cin, firstName);
 
         valid = nameValidation(firstName);
@@ -31,7 +31,7 @@ void studentNameHandler(Student &student) {
 
     // Prompt for middle initial
     do {
-        cout << "Enter student's middle initial (you may leave this blank if the student has no middle initial): ";
+        cout << "\nEnter student's middle initial (you may leave this blank if the student has no middle initial): ";
         getline(cin, middleInitial);
 
         valid = middleInitialValidation(middleInitial);
@@ -46,7 +46,6 @@ void studentNameHandler(Student &student) {
     student.setMiddleInitial(middleInitial);
 }
 
-
 void addressHandler(Student &student) { 
     string houseNumber;
     string streetName; 
@@ -57,7 +56,7 @@ void addressHandler(Student &student) {
 
     do
     {
-        cout << "Enter House Number: ";
+        cout << "\nEnter House Number: ";
         getline(cin, houseNumber);
 
         valid = validateHouseNumber(houseNumber);
@@ -70,7 +69,7 @@ void addressHandler(Student &student) {
 
     do
     {
-        cout << "Enter Street Name (or leave blank if no street name): ";
+        cout << "\nEnter Street Name (or leave blank if no street name): ";
         getline(cin, streetName);
 
         valid = streetName.size() >= 0;
@@ -79,7 +78,7 @@ void addressHandler(Student &student) {
 
     do
     {
-        cout << "Enter Subdivision/Building Name (or leave blank if no subdivision/building name): ";
+        cout << "\nEnter Subdivision/Building Name (or leave blank if no subdivision/building name): ";
         getline(cin, subdivision);
 
         valid = subdivision.size() >= 0;
@@ -89,7 +88,7 @@ void addressHandler(Student &student) {
 
     do
     {
-        cout << "Enter Barangay Name: ";
+        cout << "\nEnter Barangay Name: ";
         getline(cin, barangayName);
 
         valid = barangayName.size() > 0;
@@ -102,7 +101,7 @@ void addressHandler(Student &student) {
     
     do
     {
-        cout << "Enter City/Municipality: ";
+        cout << "\nEnter City/Municipality: ";
         getline(cin, cityMunicipality);
 
         valid = cityMunicipality.size() > 0;
@@ -127,7 +126,7 @@ void mobileHandler(Student &student) {
 
     do
     {
-        cout << "Enter your mobile number: ";
+        cout << "\nEnter student's mobile number: ";
         getline(cin, mobileNumber);
 
         valid = validateMobileNumber(mobileNumber);
@@ -144,33 +143,142 @@ void mobileHandler(Student &student) {
 void addStudent() { 
     Student student;
 
+    // student name input
     studentNameHandler(student);
 
+    // student address input
     addressHandler(student);
 
+    // mobile number input
     mobileHandler(student);
     
-    //studentNumber = generateStudentNumber();
-    // cout << "Student added successfully! Student # " << studentNumber << "\n";
+    // generate student num
+    student.generateNum();
 
-    cout << student.getFullName() << endl;
-    cout << student.getFullAddress() << endl;
-    cout << student.getMobileNum() << endl;
+    // create student file
+    string studentFileName = student.getLastName() + "_" + student.getGivenName() + ".txt";
+    ofstream studentFile (studentFileName);
+
+    if (studentFile.is_open()) { 
+
+        studentFile << student.getFullName() << endl;
+        studentFile << student.getFullAddress() << endl;
+        studentFile << student.getMobileNum() << endl;
+        studentFile << "Student # " << student.getNum() << endl;
+
+    }
+    else {
+        cout << "Unable to open file " << studentFileName;
+    }
+
+    studentFile.close();
+
+    // add student to the student list
+    if (!checkIfFileExists("Student List.txt")) { 
+
+        ofstream studentList("Student List.txt");
+        studentList << student.getNum() << " " << student.getFullName() << endl;
+        studentList.close();
+        return;
+    }
+
+    ofstream studentList("Student List.txt", ios::app); // open in append mode if it exists already;
+    studentList << student.getNum() << " " <<  student.getFullName() << endl;
+    studentList.close();
 }
 
 void displayStudent() { 
-    cout << "displaying student!" << endl;
+    string lastNameInput, firstNameInput;
+    cout << "\nEnter student's last name: ";
+    getline(cin, lastNameInput);
 
+    cout << "\nEnter student's first name: ";
+    getline(cin, firstNameInput);
+
+    string fileName = lastNameInput + "_" + firstNameInput + ".txt";
+
+    if (checkIfFileExists(fileName)) {
+
+        cout << "\nStudent details: " << endl;
+        printAllLinesInFile(fileName);
+
+    } else {
+        cout << "\nStudent " << firstNameInput << " " << lastNameInput << " does not exist" << endl;
+    }
 }
 
 void displayAllStudents() { 
-    cout << "displaying all students!" << endl;
 
+    string filename = "Student List.txt";
+
+    if (!checkIfFileExists(filename)) { 
+        cout << "\nNo student list found. Please add a student first. " << endl;
+        return;
+    }
+
+    cout << "Students: " << endl;
+    printAllLinesInFile(filename);
 }
 
 void deleteStudent() { 
-    cout << "deleting student!" << endl;
 
+    string lastNameInput, firstNameInput;
+    cout << "\nEnter student's last name: ";
+    getline(cin, lastNameInput);
+
+    cout << "\nEnter student's first name: ";
+    getline(cin, firstNameInput);
+
+    string fileName = lastNameInput + "_" + firstNameInput + ".txt";
+
+    if (!checkIfFileExists(fileName)) {
+
+        cout << "\nStudent " << firstNameInput << " " << lastNameInput << " does not exist" << endl;
+        return;
+    }
+
+    // remove student file
+    if (remove(fileName.c_str()) == 0) {
+
+        cout << "Student " << lastNameInput << " " << firstNameInput << " deleted successfully!" << endl; 
+    }  
+    else {
+        
+        cout << "Error: File for class " << lastNameInput << " " << firstNameInput << " cannot be deleted." << endl;
+    }
+
+    ifstream studentListFile("Student list.txt");
+    ofstream temp("temp.txt");
+
+    // remove from student list
+    bool studentFound = false;
+    string line;
+
+    while(getline(studentListFile, line)) { 
+
+        if (line.find(lastNameInput + ", " + firstNameInput) == string::npos) { 
+
+            temp << line << endl;
+        }
+        else { 
+            studentFound = true;
+        }
+    } 
+
+    studentListFile.close();
+    temp.close();
+
+    if (studentFound) { 
+
+        remove("Student List.txt");
+        rename("temp.txt", "Student List.txt");
+
+    } else {
+
+        // if the student wasn't found, remove the temp file
+        remove("temp.txt");
+        cout << "The student you requested does not exist." << endl;
+    }
 }
 
 void studentRegistration() { 

@@ -33,7 +33,18 @@ class User {
         string getMobileNum()  { return mobileNum; }
 
         string getFullAddress() { 
-            string fullAddress = houseNum + " " + streetName + ", " + buildingName + ", " + barangayName + ", " + city;
+            string fullAddress = houseNum + ", ";
+            
+            if (!streetName.empty()) { 
+                fullAddress = fullAddress + streetName + ", ";
+            }
+
+            if (!buildingName.empty()) { 
+                fullAddress = fullAddress + buildingName + ", ";
+            }
+
+            fullAddress = fullAddress + barangayName + ", " + city;
+            
             return fullAddress;
         }
 
@@ -74,6 +85,34 @@ class Student : public User {
 
         void generateNum() { 
 
+            int lineCount = 0;
+            int intStudentNum;
+            
+            // check if student list file exists
+            if (!checkIfFileExists("Student List.txt")) { 
+                // if not, 24-001
+                studentNum = "24-001";
+                return;
+            }
+            
+            ifstream studentFile("Student List.txt");
+
+            // if it does, count how many lines there are 
+            string line;
+            while(getline(studentFile, line)) { 
+                lineCount++;
+            }
+
+            studentFile.close();
+
+            // 24-num of lines + 1 with zeros
+            intStudentNum = lineCount + 1;
+
+            studentNum = "24-" + createNDigitNum(3, intStudentNum);
+        }
+
+        string getNum() { 
+            return studentNum;
         }
 };
 
@@ -105,7 +144,7 @@ class Teacher : public User {
             string fullName = givenName + " " + middleInitial;
 
             // add a dot if the middle initial is not empty
-            if (middleInitial != "") { 
+            if (!middleInitial.empty()) { 
                 fullName = fullName + ".";
             }
 
@@ -119,7 +158,7 @@ class Teacher : public User {
             string fullName = lastName + ", " + givenName + " " + middleInitial;
 
             // add a dot if the middle initial is not empty
-            if (middleInitial != "") { 
+            if (!middleInitial.empty()) { 
                 fullName = fullName + ".";
             }
 
@@ -127,6 +166,6 @@ class Teacher : public User {
         }
 
         void generateNum() { 
-            
+
         }
 };
