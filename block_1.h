@@ -170,8 +170,8 @@ void addStudent() {
     else {
         cout << "Unable to open file " << studentFileName;
     }
-
     studentFile.close();
+
 
     // add student to the student list
     if (!checkIfFileExists("Student List.txt")) { 
@@ -185,6 +185,9 @@ void addStudent() {
     ofstream studentList("Student List.txt", ios::app); // open in append mode if it exists already;
     studentList << student.getNum() << " " <<  student.getFullName() << endl;
     studentList.close();
+
+    cout << "\nStudent added: " << endl;
+    printAllLinesInFile(studentFileName);
 }
 
 void displayStudent() { 

@@ -52,13 +52,11 @@ bool validateMobileNumber(string mobileNumInput) {
 
     // check if an integer
     if (!isValidInteger(mobileNumInput)) { 
-        cout << "not integer" << endl;
         return false;
     }
 
     // check if mobile num is of length 11
     if (mobileNumInput.size() != 11) { 
-        cout << "not 11" << endl;
         return false;
     }
 
