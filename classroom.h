@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "teacher.h"
+#include "users.h"
 
 using namespace std;
 
@@ -15,13 +15,7 @@ private:
 
 public:
     // constructor with no parameters
-    Classroom() { 
-        roomNumber = 0;
-        buildingCompleteName = "Unknown Building Name";
-        buildingAbbreviation = "Unknown Building Abbreviation";
-        classroomType = "Unknown Classroom Type";
-        laboratoryType = "Unknown Laboratory Type";
-    }
+    Classroom() {}
 
     // Constructor with parameters
     Classroom(int rn, string bcn, string ba, string ct, string lt) {

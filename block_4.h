@@ -1,5 +1,6 @@
 #include <iostream>
 #include "block_3.h"
+#include <filesystem>
 
 using namespace std; 
 
@@ -36,13 +37,23 @@ string subjectInputHandler() {
 
 string sectionInputHandler() { 
     string section;
+    bool valid;
 
     cout << "\nWhat is the name of the section?" << endl;
-    cout << "Enter your input: ";
-    getline(cin, section);
 
-    // section input validation
+    do
+    {
+        cout << "Enter your input: ";
+        getline(cin, section);
 
+        valid = allUpper(section);
+
+        if (!valid) { 
+            cout << "\nInvalid input. Please use only capital letters. " << endl;
+        }
+
+    } while (!valid);
+    
     return section;
 }
 
@@ -158,20 +169,20 @@ void createClass() {
     Class createdClass(subject, days, time, section);
 
     // create class file 
-    string fileName = createdClass.getSubject() + "_" + createdClass.getSectionName() + ".txt"; 
+    string fileName = subject + "_" + section + ".txt"; 
 
     ofstream subjectSectionFile (fileName);
 
     // placing the inputted information into the Subject_section name file
-    if (subjectSectionFile.is_open())
-    {
+    if (subjectSectionFile.is_open()) {
+
         subjectSectionFile << "Subject: " << subject << endl;
         subjectSectionFile << "Days: " << days << endl;
         subjectSectionFile << "Time: " << time << endl;
         subjectSectionFile << "Section: " << section << endl;
     }
-    else
-    {
+    else {
+
         cout << "Unable to open file " << fileName << endl;
     }
 
@@ -181,6 +192,20 @@ void createClass() {
 
     // input the students
 
+    // class list.txt
+    string classListFilename = "Class list.txt";
+
+    if (checkIfFileExists(classListFilename)) { 
+
+        ofstream classListFile (classListFilename, ios::app);
+        classListFile << subject << " " << section << endl;
+
+    } else { 
+
+        ofstream classListFile (classListFilename);
+        classListFile << subject << " " << section << endl;
+    }
+
     subjectSectionFile.close();
 
     // goes back to main menu, but greet before
@@ -188,16 +213,194 @@ void createClass() {
     printAllLinesInFile(fileName);
 }
 
+void displayAnotherClass(void (*displayClassFunction)()) { 
+    
+    string choiceToRepeat;
+    bool valid; 
+    // Ask if user would like to repeat
+    cout << "\nWould you like to display another class?" << endl;
+    cout << "1. Yes" << endl;
+    cout << "2. No" << endl;
+
+    do {
+        cout << "Enter your option: ";
+        getline(cin, choiceToRepeat);
+
+        valid = isValidInteger(choiceToRepeat) && withinBounds(choiceToRepeat, 1, 2);
+
+        if (!valid) {
+
+            cout << "Invalid input. Please enter either 1 or 2." << endl;
+        }
+
+    } while (!valid);
+
+    switch (stoi(choiceToRepeat)) { 
+        case 1:
+            displayClassFunction();
+        case 2: 
+            break;
+
+        // no need for default since 1 and 2 were already checked for 
+    }
+}
+
 void displayClass() { 
 
+    string subjectInput, sectionInput, fileName;
+
+    cout << "\nWhat is the subject of the class you would like to display?" << endl;
+    cout << "Enter your input: ";
+
+    getline(cin, subjectInput);
+
+    cout << "\nWhat is the section of the class you would like to display?" << endl;
+    cout << "Enter your input: ";
+
+    getline(cin, sectionInput);
+
+    // Search for the file and print its contents based on the inputs
+    fileName = subjectInput + "_" + sectionInput + ".txt";
+
+    // Validate if file exists
+    if (!checkIfFileExists(fileName)) {
+        cout << "\nThe class " << subjectInput << " " << sectionInput << " does not exist." << endl;
+        displayAnotherClass(displayClass);
+        return;
+    }
+
+    cout << "\nHere is the information for the class: " << subjectInput << " " << sectionInput << endl;
+    cout << '\n';
+    printAllLinesInFile(fileName);
+
+    displayAnotherClass(displayClass);
 }
 
 void displayAllClasses() { 
 
+    string filename = "Class list.txt";
+
+    if (!checkIfFileExists(filename)) { 
+        cout << "\nNo class list found. Consider making a class first. " << endl;
+        return;
+    }
+
+    cout << "\nClasses: " << endl;
+    printAllLinesInFile(filename);
+}
+
+void deleteAnotherClass(void (*deleteClassFunction)()) { 
+    string choiceToRepeat;
+    bool valid; 
+    // Ask if user would like to repeat
+    cout << "\nWould you like to delete another class?" << endl;
+    cout << "1. Yes" << endl;
+    cout << "2. No" << endl;
+
+    do {
+        cout << "Enter your option: ";
+        getline(cin, choiceToRepeat);
+
+        valid = isValidInteger(choiceToRepeat) && withinBounds(choiceToRepeat, 1, 2);
+
+        if (!valid) {
+
+            cout << "Invalid input. Please enter either 1 or 2." << endl;
+        }
+
+    } while (!valid);
+
+    switch (stoi(choiceToRepeat)) { 
+        case 1:
+            deleteClassFunction();
+        case 2: 
+            break;
+
+        // no need for default since 1 and 2 were already checked for 
+    }
 }
 
 void deleteClass() { 
+ 
+    string subjectInput;
+    string sectionInput;
+    string fileName;
+    string className;
 
+    cout << "\nWhat is the subject of the class you would like to delete?" << endl;
+    cout << "Enter your input: ";
+
+    getline(cin, subjectInput);
+
+    cout << "\nWhat is the section of the class you would like to delete?" << endl;
+    cout << "Enter your input: ";
+
+    getline(cin, sectionInput);
+
+    fileName = subjectInput + "_" + sectionInput + ".txt";
+    className = subjectInput + " " + sectionInput;
+
+    // Validate if class file exists
+    if (!checkIfFileExists(fileName)) {
+
+        cout << "\nThe class " << className << " does not exist." << endl;
+        deleteAnotherClass(deleteClass);
+        return;
+    }
+
+    // remove the class file
+    if (remove(fileName.c_str()) == 0) {
+
+        cout << "Class" << className << " deleted successfully!" << endl; 
+    }  
+    else {
+        
+        cout << "Error: File for class " << className << " cannot be deleted." << endl;
+    }
+
+    // validate if class list file exists
+    if (!checkIfFileExists("Class list.txt")) { 
+
+        cout << "Error opening Class list.txt! Try creating a class first." << endl;
+        return;
+    }
+
+    ifstream classListFile("Class list.txt");
+    ofstream temp("temp.txt");
+
+    // delete line from class list file
+    bool classFound = false;
+    string line;
+
+    while (getline(classListFile, line)) { 
+
+        if (line != className) { 
+
+            temp << line << endl;
+        } else { 
+
+            classFound = true;
+        }
+    }
+
+    classListFile.close();
+    temp.close();
+
+    if (classFound) { 
+
+        // replace the original file with the temp file
+        remove("Class list.txt");          
+        rename("temp.txt", "Class list.txt"); 
+    }
+    else { 
+
+        // if the class wasn't found, remove the temp file
+        remove("temp.txt");
+        cout << "The class you requested does not exist." << endl;
+    }
+
+    // ask to repeat
+    deleteAnotherClass(deleteClass);
 }
 
 void classroomRegistration() { 
@@ -205,14 +408,14 @@ void classroomRegistration() {
     string input; 
     int intInput;
 
-    cout << "\nWhich of the following would you like to do: " << endl;
-
-    cout << "[1] Create a class" << endl;
-    cout << "[2] Display a class" << endl;
-    cout << "[3] Display all classes" << endl;
-    cout << "[4] Delete a class" << endl;
-
     do {
+
+        cout << "\nWhich of the following would you like to do: " << endl;
+        cout << "[1] Create a class" << endl;
+        cout << "[2] Display a class" << endl;
+        cout << "[3] Display all classes" << endl;
+        cout << "[4] Delete a class" << endl;
+        cout << "[5] Back to Main Menu" << endl;
 
         cout << "Enter your input: ";
         getline(cin, input);
@@ -228,16 +431,19 @@ void classroomRegistration() {
             break;
 
         case 2:
-            
+            displayClass();
             break;
 
         case 3:
-            
+            displayAllClasses();
             break;
 
         case 4:     
-
+            deleteClass();
             break;
+
+        case 5:
+            break; 
 
         default:
             cout << "\nInvalid input. Please pick a number from 1-4.";

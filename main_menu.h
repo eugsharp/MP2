@@ -7,14 +7,14 @@ void mainMenu() {
     string input;
     int intInput = 0;
 
-    cout << "Good Day! What would you like to do?" << endl;
-    cout << "[1] Register a student" << endl;
-    cout << "[2] Create information for a teacher" << endl;
-    cout << "[3] Create information for a classroom" << endl;
-    cout << "[4] Register a Class" << endl;
-    cout << "[5] Quit the Program" << endl;
-
     do {
+
+        cout << "What would you like to do?" << endl;
+        cout << "[1] Register a student" << endl;
+        cout << "[2] Create information for a teacher" << endl;
+        cout << "[3] Create information for a classroom" << endl;
+        cout << "[4] Register a Class" << endl;
+        cout << "[5] Quit the Program" << endl;
 
         cout << "Enter your input: ";
         getline(cin, input);
@@ -26,15 +26,15 @@ void mainMenu() {
         
         switch (intInput) {
         case 1:
-            
+            studentRegistration();
             break;
 
         case 2:
-            
+            teacherInfo();
             break;
 
         case 3:
-            
+            classroomInfo();
             break;
 
         case 4:
