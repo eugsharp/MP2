@@ -213,7 +213,7 @@ void createClass() {
     printAllLinesInFile(fileName);
 }
 
-void displayAnotherClass(void (*displayClassFunction)()) { 
+void displayAnotherClass(void (*displayClassFunction)()) { // use of pointer to use a function as a parameter
     
     string choiceToRepeat;
     bool valid; 
@@ -289,7 +289,7 @@ void displayAllClasses() {
     printAllLinesInFile(filename);
 }
 
-void deleteAnotherClass(void (*deleteClassFunction)()) { 
+void deleteAnotherClass(void (*deleteClassFunction)()) { // use of pointer to use a function as a parameter
     string choiceToRepeat;
     bool valid; 
     // Ask if user would like to repeat
