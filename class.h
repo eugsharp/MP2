@@ -5,8 +5,6 @@
 
 #define MAX_STUDENTS 30
 
-using namespace std;
-
 class Class {
 
     string subject;

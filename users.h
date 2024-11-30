@@ -2,18 +2,14 @@
 #include "util_funcs.h"
 #include "option_handlers.h"
 
-#include <iomanip>
-
-using namespace std;
-
 class User { 
     protected:
         string lastName;
         string givenName;
-        string middleInitial = "";
+        string middleInitial;
         string houseNum;
-        string streetName = "";
-        string buildingName = "";
+        string streetName;
+        string buildingName;
         string barangayName;
         string city;
         string mobileNum;
@@ -36,6 +32,11 @@ class User {
         string getCity()  { return city; }
         string getMobileNum()  { return mobileNum; }
 
+        string getFullAddress() { 
+            string fullAddress = houseNum + " " + streetName + ", " + buildingName + ", " + barangayName + ", " + city;
+            return fullAddress;
+        }
+
         void setLastName( string ln) { lastName = ln; }
         void setGivenName( string gn) { givenName = gn; }
         void setMiddleInitial( string mi) { middleInitial = mi; }
@@ -52,6 +53,13 @@ class Student : public User {
         string studentNum;
         
     public:
+        // Default constructor for Student class
+        Student() : User(), studentNum("") {}
+
+        // Constructor with parameters for Student class
+        Student(string ln, string gn, string mi, string hn, string sn, string bn, string barn, string c, string mn, string snum)
+        : User(ln, gn, mi, hn, sn, bn, barn, c, mn), studentNum(snum) {}
+
         string getFullName() { 
 
             string fullName = lastName + ", " + givenName + " " + middleInitial;
@@ -61,7 +69,11 @@ class Student : public User {
                 fullName = fullName + ".";
             }
 
-            return lastName;
+            return fullName;
+        }
+
+        void generateNum() { 
+
         }
 };
 
@@ -71,6 +83,23 @@ class Teacher : public User {
         string teacherNum;
 
     public: 
+        // Default constructor for Teacher class
+        Teacher() : User(), teacherNum("") {
+            // Initialize subjects array to empty strings
+            for (int i = 0; i < 10; ++i) {
+                subjects[i] = "";
+            }
+        }
+
+        // Constructor with parameters for Teacher class
+        Teacher(string ln, string gn, string mi, string hn, string sn, string bn, string barn, string c, string mn, string tnum)
+        : User(ln, gn, mi, hn, sn, bn, barn, c, mn), teacherNum(tnum) {
+            // Initialize subjects array to empty strings
+            for (int i = 0; i < 10; ++i) {
+                subjects[i] = "";
+            }
+        }
+
         string getFullName() { // returns the name of the teacher in first, mid, last
 
             string fullName = givenName + " " + middleInitial;
@@ -95,5 +124,9 @@ class Teacher : public User {
             }
 
             return lastName;
+        }
+
+        void generateNum() { 
+            
         }
 };

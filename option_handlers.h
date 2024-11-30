@@ -1,10 +1,5 @@
 #include <string>
-using namespace std; 
 
-/*
-    Takes the user choice of the subject and returns the subject name of appropriate choice
-    @param option numerical option of user for subject
-*/
 string subjectNameFromOption(int option)
 {
     switch (option)
@@ -55,10 +50,6 @@ string subjectNameFromOption(int option)
     }
 }
 
-/*
-    Takes the user choice of the day and returns the days of appropriate choice
-    @param option numerical option of user for days
-*/
 string daysFromDayChoice(string option)
 {
     if (!isValidInteger(option)) { 
@@ -106,10 +97,6 @@ string daysFromDayChoice(string option)
     }
 }
 
-/*
-    Takes the user choice of the day and returns the time of appropriate choice, for classes that take place once per week
-    @param option numerical option of user for time
-*/
 string timesFromOptionSingleDay(int option)
 {
     switch (option)
@@ -132,10 +119,6 @@ string timesFromOptionSingleDay(int option)
     }
 }
 
-/*
-    Takes the user choice of the day and returns the time of appropriate choice, for classes that take place twice per week
-    @param option numerical option of user for time
-*/
 string timesFromOptionDoubleDay(int option)
 {
     switch (option)

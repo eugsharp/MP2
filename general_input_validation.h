@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 
-using namespace std; 
+using namespace std;
 
 bool isValidInteger(string input) {
 
@@ -28,11 +28,6 @@ bool withinBounds (string input, int lowerBound, int upperBound) {
     return intInput >= lowerBound && intInput <= upperBound;
 }
 
-
-/*
-    Checks if a given string contains numbers in it
-    @param givenString string to check for numbers in it
-*/
 bool checkForNumbers(string givenString)
 {
     int numbersFound = 0;
@@ -49,11 +44,6 @@ bool checkForNumbers(string givenString)
     return numbersFound > 0;
 }
 
-
-/*
-    Checks to see if the given character is an uppercase character
-    @param letter character to check if uppercase
-*/
 bool isUpper(char letter)
 {
     int capitalCounter = 0;
@@ -88,4 +78,8 @@ bool allUpper(string line) {
     }
     
     return allIsUpper;
+}
+
+bool stringLongerThan1(string line) { 
+    return line.size() > 0;
 }

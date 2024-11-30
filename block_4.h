@@ -2,8 +2,6 @@
 #include "block_3.h"
 #include <filesystem>
 
-using namespace std; 
-
 string subjectInputHandler() {
     string subject;
     bool valid;
@@ -446,7 +444,7 @@ void classroomRegistration() {
             break; 
 
         default:
-            cout << "\nInvalid input. Please pick a number from 1-4.";
+            cout << "\nInvalid input. Please pick a number from 1-5.";
             break;
         }
 

@@ -2,8 +2,6 @@
 #include <fstream>
 #include <string>
 
-using namespace std; 
-
 /*
     Prints all lines in a given file
     @param fileName name of the desired file to print

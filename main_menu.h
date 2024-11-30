@@ -1,8 +1,6 @@
 #include <iostream> 
 #include "block_4.h"
 
-using namespace std; 
-
 void mainMenu() { 
     string input;
     int intInput = 0;

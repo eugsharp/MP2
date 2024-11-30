@@ -3,8 +3,6 @@
 #include <fstream>
 #include "users.h"
 
-using namespace std;
-
 class Classroom {
 private:
     int roomNumber;
