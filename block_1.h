@@ -1,5 +1,5 @@
 #include <iostream>
-#include "block_1_input_validation.h"
+#include "block_1_and_2_input_validation.h"
 
 void studentNameHandler(Student &student) { 
     string lastName;
@@ -46,7 +46,7 @@ void studentNameHandler(Student &student) {
     student.setMiddleInitial(middleInitial);
 }
 
-void addressHandler(Student &student) { 
+void studentAddressHandler(Student &student) { 
     string houseNumber;
     string streetName; 
     string subdivision;
@@ -119,7 +119,7 @@ void addressHandler(Student &student) {
     student.setCity(cityMunicipality);
 }
 
-void mobileHandler(Student &student) { 
+void studentMobileHandler(Student &student) { 
     
     string mobileNumber;
     bool valid;
@@ -147,10 +147,10 @@ void addStudent() {
     studentNameHandler(student);
 
     // student address input
-    addressHandler(student);
+    studentAddressHandler(student);
 
     // mobile number input
-    mobileHandler(student);
+    studentMobileHandler(student);
     
     // generate student num
     student.generateNum();
@@ -179,6 +179,9 @@ void addStudent() {
         ofstream studentList("Student List.txt");
         studentList << student.getNum() << " " << student.getFullName() << endl;
         studentList.close();
+
+        cout << "\nStudent added: " << endl;
+        printAllLinesInFile(studentFileName);
         return;
     }
 
@@ -219,7 +222,7 @@ void displayAllStudents() {
         return;
     }
 
-    cout << "Students: " << endl;
+    cout << "\nStudents: " << endl;
     printAllLinesInFile(filename);
 }
 

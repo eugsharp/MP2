@@ -1,20 +1,285 @@
-#include "block_1.h"
 #include <iostream>
+#include "block_1.h"
+
+void teacherNameHandler(Teacher &teacher) { 
+    string lastName;
+    string firstName;
+    string middleInitial;
+    bool valid;
+
+    // Prompt for last name
+    do {
+        cout << "\nEnter teacher's last name: ";
+        getline(cin, lastName);
+
+        valid = nameValidation(lastName);
+        if (!valid) {
+            cout << "Invalid last name. Ensure it contains no numbers and is not blank." << endl;
+        }
+    } while (!valid);
+
+    // Prompt for given name
+    do {
+        cout << "\nEnter teacher's given name: ";
+        getline(cin, firstName);
+
+        valid = nameValidation(firstName);
+        if (!valid) {
+            cout << "Invalid given name. Ensure it contains no numbers and is not blank." << endl;
+        }
+    } while (!valid);
+
+    // Prompt for middle initial
+    do {
+        cout << "\nEnter teacher's middle initial (you may leave this blank if the teacher has no middle initial): ";
+        getline(cin, middleInitial);
+
+        valid = middleInitialValidation(middleInitial);
+        if (!valid) {
+            cout << "Invalid middle initial. Ensure it is a single uppercase letter or blank." << endl;
+        }
+    } while (!valid);
+
+    // Set the validated values to the teacher object
+    teacher.setGivenName(firstName);
+    teacher.setLastName(lastName);
+    teacher.setMiddleInitial(middleInitial);
+}
+
+void teacherAddressHandler(Teacher &teacher) {
+    string houseNumber;
+    string streetName; 
+    string subdivision;
+    string barangayName;
+    string cityMunicipality;
+    bool valid;
+
+    do
+    {
+        cout << "\nEnter House Number: ";
+        getline(cin, houseNumber);
+
+        valid = validateHouseNumber(houseNumber);
+
+        if (!valid) { 
+            cout << "\nInvalid input. Ensure the house number are digits only, and a maximum of 4 numbers." << endl;
+        }
+
+    } while (!valid);
+
+    do
+    {
+        cout << "\nEnter Street Name (or leave blank if no street name): ";
+        getline(cin, streetName);
+
+        valid = streetName.size() >= 0;
+
+    } while (!valid);
+
+    do
+    {
+        cout << "\nEnter Subdivision/Building Name (or leave blank if no subdivision/building name): ";
+        getline(cin, subdivision);
+
+        valid = subdivision.size() >= 0;
+
+    } while (!valid);
+    
+
+    do
+    {
+        cout << "\nEnter Barangay Name: ";
+        getline(cin, barangayName);
+
+        valid = barangayName.size() > 0;
+
+        if (!valid) { 
+            cout << "\nInvalid input. Ensure your input isn't blank. " << endl;
+        }
+
+    } while (!valid);
+    
+    do
+    {
+        cout << "\nEnter City/Municipality: ";
+        getline(cin, cityMunicipality);
+
+        valid = cityMunicipality.size() > 0;
+
+        if (!valid) { 
+            cout << "\nInvalid input. Ensure your input isn't blank. " << endl;
+        }
+
+    } while (!valid);
+
+    teacher.setHouseNum(houseNumber);
+    teacher.setStreetName(streetName);
+    teacher.setBuildingName(subdivision);
+    teacher.setBarangayName(barangayName);
+    teacher.setCity(cityMunicipality);
+}
+
+void teacherMobileHandler(Teacher &teacher) { 
+    
+    string mobileNumber;
+    bool valid;
+
+    do
+    {
+        cout << "\nEnter teacher's mobile number: ";
+        getline(cin, mobileNumber);
+
+        valid = validateMobileNumber(mobileNumber);
+
+        if (!valid) { 
+            cout << "\nInvalid input. Mobile number must start with '09' and be 11 digits long. " << endl; 
+        }
+
+    } while (!valid);
+
+    teacher.setMobileNum(mobileNumber);
+}
 
 void addTeacher() { 
+    Teacher teacher;
 
+    teacherNameHandler(teacher);
+
+    teacherAddressHandler(teacher);
+
+    teacherMobileHandler(teacher);
+    
+    teacher.generateNum();
+
+    // create teacher file
+    string teacherFileName = teacher.getLastName() + "_" + teacher.getGivenName() + ".txt";
+    ofstream teacherFile (teacherFileName);
+
+    if (teacherFile.is_open()) { 
+
+        teacherFile << teacher.getOrderedFullName() << endl;
+        teacherFile << teacher.getFullAddress() << endl;
+        teacherFile << teacher.getMobileNum() << endl;
+        teacherFile << "Teacher # " << teacher.getNum() << endl;
+
+    }
+    else {
+        cout << "Unable to open file " << teacherFileName;
+    }
+    teacherFile.close();
+
+
+    // add teacher to the teacher list
+    if (!checkIfFileExists("Teacher List.txt")) { 
+
+        ofstream teacherList("Teacher List.txt");
+        teacherList << teacher.getNum() << " " << teacher.getOrderedFullName() << endl;
+        teacherList.close();
+
+        cout << "\nTeacher added: " << endl;
+        printAllLinesInFile(teacherFileName);
+        return;
+    }
+
+    ofstream teacherList("Teacher List.txt", ios::app); // open in append mode if it exists already;
+    teacherList << teacher.getNum() << " " <<  teacher.getOrderedFullName() << endl;
+    teacherList.close();
+
+    cout << "\nTeacher added: " << endl;
+    printAllLinesInFile(teacherFileName);
 }
 
 void displayTeacher() { 
+    string lastNameInput, firstNameInput;
+    cout << "\nEnter teacher's last name: ";
+    getline(cin, lastNameInput);
 
+    cout << "\nEnter teacher's first name: ";
+    getline(cin, firstNameInput);
+
+    string fileName = lastNameInput + "_" + firstNameInput + ".txt";
+
+    if (checkIfFileExists(fileName)) {
+
+        cout << "\nTeacher details: " << endl;
+        printAllLinesInFile(fileName);
+
+    } else {
+        cout << "\nTeacher " << firstNameInput << " " << lastNameInput << " does not exist" << endl;
+    }
 }
 
 void displayAllTeachers() { 
 
+    string filename = "Teacher List.txt";
+
+    if (!checkIfFileExists(filename)) { 
+        cout << "\nNo teacher list found. Please add a teacher first. " << endl;
+        return;
+    }
+
+    cout << "\nTeachers: " << endl;
+    printAllLinesInFile(filename);
 }
 
 void deleteTeacher() { 
-    
+    string lastNameInput, firstNameInput;
+    cout << "\nEnter teacher's last name: ";
+    getline(cin, lastNameInput);
+
+    cout << "\nEnter teacher's first name: ";
+    getline(cin, firstNameInput);
+
+    string fileName = lastNameInput + "_" + firstNameInput + ".txt";
+
+    if (!checkIfFileExists(fileName)) {
+
+        cout << "\nTeacher " << firstNameInput << " " << lastNameInput << " does not exist" << endl;
+        return;
+    }
+
+    // remove teacher file
+    if (remove(fileName.c_str()) == 0) {
+
+        cout << "Teacher " << lastNameInput << " " << firstNameInput << " deleted successfully!" << endl; 
+    }  
+    else {
+        
+        cout << "Error: File for class " << lastNameInput << " " << firstNameInput << " cannot be deleted." << endl;
+    }
+
+    ifstream teacherListFile("Teacher list.txt");
+    ofstream temp("temp.txt");
+
+    // remove from teacher list
+    bool teacherFound = false;
+    string line;
+
+    while(getline(teacherListFile, line)) { 
+
+        if (line.find(lastNameInput + ", " + firstNameInput) == string::npos) { 
+
+            temp << line << endl;
+        }
+        else { 
+            teacherFound = true;
+        }
+    } 
+
+    teacherListFile.close();
+    temp.close();
+
+    if (teacherFound) { 
+
+        remove("Teacher List.txt");
+        rename("temp.txt", "Teacher List.txt");
+
+    } else {
+
+        // if the teacher wasn't found, remove the temp file
+        remove("temp.txt");
+        cout << "The teacher you requested does not exist." << endl;
+    }
 }
 
 void teacherInfo() { 
@@ -22,7 +287,6 @@ void teacherInfo() {
     int intInput;
 
     do {
-
         cout << "\nWhich of the following would you like to do: " << endl;
         cout << "[1] Add a teacher" << endl;
         cout << "[2] Display a teacher" << endl;
@@ -40,19 +304,19 @@ void teacherInfo() {
         
         switch (intInput) {
         case 1:
-            
+            addTeacher();
             break;
 
         case 2:
-            
+            displayTeacher();
             break;
 
         case 3:
-            
+            displayAllTeachers();
             break;
 
         case 4:     
-            
+            deleteTeacher();
             break;
 
         case 5:

@@ -150,7 +150,7 @@ class Teacher : public User {
 
             fullName = fullName + " " + lastName;
 
-            return lastName;
+            return fullName;
         }
 
         string getOrderedFullName() { // returns the name of the teacher in last, first, mid
@@ -162,10 +162,37 @@ class Teacher : public User {
                 fullName = fullName + ".";
             }
 
-            return lastName;
+            return fullName;
         }
 
         void generateNum() { 
+            int lineCount = 0;
+            int intTeacherNum;
+            
+            // check if student list file exists
+            if (!checkIfFileExists("Teacher List.txt")) { 
+                // if not, 01-001
+                teacherNum = "01-001";
+                return;
+            }
+            
+            ifstream teacherFile("Teacher List.txt");
 
+            // if it does, count how many lines there are 
+            string line;
+            while(getline(teacherFile, line)) { 
+                lineCount++;
+            }
+
+            teacherFile.close();
+
+            // 01-num of lines + 1 with zeros
+            intTeacherNum = lineCount + 1;
+
+            teacherNum = "01-" + createNDigitNum(3, intTeacherNum);
+        }
+
+        string getNum() { 
+            return teacherNum;
         }
 };

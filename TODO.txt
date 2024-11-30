@@ -4,3 +4,7 @@
 - consider removing the constructors with the parameters
 
 - loop in display and delete student
+
+- consider making manager class to handle add, display, display all, remove
+
+- 
