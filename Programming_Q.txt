@@ -1,8 +1,0 @@
-Subject: Programming
-Days: MTh
-Time: 08:00-09:30
-Section name: Q
-Classroom: K 123
-Teacher: Roehl Briones
-1. 24-002 Smith, John A.
-2. 24-003 Adams, Michael S.

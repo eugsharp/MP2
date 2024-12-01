@@ -1,5 +1,0 @@
-Briones, Roehl 
-1, 1, 1
-09121231234
-Programming, Drafting, Data Analysis
-Employee # 01-001
