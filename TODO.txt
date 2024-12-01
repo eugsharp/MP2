@@ -10,3 +10,5 @@
 - deal with duplicates in __ List.txt
 
 - deal with empty inputs in menus
+
+- input should be capitalized if lower case in classroom abbreviation
