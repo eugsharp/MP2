@@ -50,14 +50,9 @@ string subjectNameFromOption(int option)
     }
 }
 
-string daysFromDayChoice(string option)
+string daysFromDayChoice(int option)
 {
-    if (!isValidInteger(option)) { 
-        cout << option << " is not a valid integer for days choice. ";
-        return "";
-    }
-
-    switch (stoi(option))
+    switch (option)
     {
     case 1:
         return "MTh";

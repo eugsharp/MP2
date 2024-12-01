@@ -5,10 +5,14 @@
 
 - loop in display and delete student
 
-- consider making manager class to handle add, display, display all, remove
-
 - deal with duplicates in __ List.txt
 
-- deal with empty inputs in menus
-
 - input should be capitalized if lower case in classroom abbreviation
+
+- room num can have 1-4 capital letters
+
+- dont reuse student number
+
+- point out the use of pointers
+
+- consider the files existing but might be empty (block 4)

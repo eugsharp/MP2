@@ -2,8 +2,7 @@
 #include <string>
 #include <fstream>
 #include "classroom.h"
-
-#define MAX_STUDENTS 30
+#include <sstream>
 
 class Class {
 
@@ -11,21 +10,75 @@ class Class {
     string days;
     string time;
     string sectionName;
-    Classroom classroom;
-    // Teacher teacherName;
-    // Student students[30][2]; // first for number, second for name
-
-    int studentCount;
+    string classroom; // building abbreviation + room num
+    string teacherName; // ordered
+    string students[30][2]; // first for number, second for name
+    int daysPerWeek;
+    int studentCount = 0;
 
 public:
-    Class(string s, string d, string t, string sN) {
-        subject = s;
-        days = d;
-        time = t;
-        sectionName = sN;
-        studentCount = 0;
+    Class () {}
+
+    void setSubject(string subj) {
+
+        if (!isValidInteger(subj)) { 
+            cout << "Subject choice not valid. " << endl;
+            return;
+        }
+
+        subject = subjectNameFromOption(stoi(subj));
     }
 
+    void setDays(string d) {
+
+        if (!isValidInteger(d)) { 
+            cout << "Days choice not valid. " << endl;
+            return;
+        }
+
+        if (stoi(d) <= 2) { 
+
+            daysPerWeek = 2;
+
+        } else{ 
+
+            daysPerWeek = 1;
+        }
+
+        days = daysFromDayChoice(stoi(d));
+    }
+
+    void setTime(string t) {
+
+        if (!isValidInteger(t)) { 
+
+            cout << "Time choice not valid. " << endl;
+            return;
+        }
+
+        switch (daysPerWeek)
+        {
+        case 1:
+            time = timesFromOptionSingleDay(stoi(t));
+            break;
+
+        case 2:
+            time = timesFromOptionDoubleDay(stoi(t));
+            break;
+        }
+    }
+
+    void setSectionName(string section) {
+        sectionName = section;
+    }
+
+    void setClassroom(string room) {
+        classroom = room;
+    }
+
+    void setTeacherName(string teacher) {
+        teacherName = teacher;
+    }
     string getSubject() {
         return subject;
     }
@@ -42,62 +95,88 @@ public:
         return sectionName;
     }
 
-    Classroom getClassroom() { 
+    string getClassroom() { 
         return classroom;
     }
 
-    // void setClassroom(string rn, string bcn, string ba, string ct, string lt) { 
-    //     classroom.setRoomNumber(rn);
-    //     classroom.setBuildingName(bcn);
-    //     classroom.setBuildingAbbreviation(ba);
-    //     classroom.setClassroomType(ct);
-    //     classroom.setLaboratoryType(lt);
-    // }
+    string getTeacherName() {
+        return teacherName;
+    }
 
-    // string getClassroomName() {
-    //     return classroomName;
-    // }
+    int getDaysPerWeek() { 
+        return daysPerWeek;
+    }
 
-    // string getClassroomNumber() {
-    //     return classroomNumber;
-    // }
+    // subject counter
 
-    // string getTeacherName() {
-    //     return teacherName;
-    // }
+    // check for section duplicates
 
-    // string getStudentNames() { 
+    // add students to file
+    void addStudentsToFile(string filename) { 
 
-    //     string studentList = "";
+        ofstream file (filename, ios::app);
+    }
 
-    //     for (int i = 0; i < MAX_STUDENTS; i++) {
+    void addStudent(string studentNum, string studentName) { 
+        students[studentCount][0] = studentNum;
+        students[studentCount][1] = studentName;
+    }
 
-    //         if (students[i][0].empty() || students[i][1].empty()) {
-    //             return "";
-    //         }
+    // sort student list
+    void sortStudents()
+    {
+        // get the student nums
 
-    //         studentList += students[i][0] + " " + students[i][1] + '\n';
-    //     }
-        
-    //     return studentList;
-    // }
+        // remove the "24-"
 
-    // void setClassroomName(string classroomNameInput) {
-    //     classroomName = classroomNameInput;
-    // }
+        // convert to integer
 
-    // void setClassroomNum(string classroomNumInput) {
-    //     classroomNumber = classroomNumInput;
-    // }
+        // sort integers
 
-    // void setTeacher(string teacherInput) {
-    //     teacherName = teacherInput;
-    // }
+        // add the "24-"
 
-    // void setStudent(string studentNumber, string studentName) {
-    //     students[studentCount][0] = studentNumber;
-    //     students[studentCount][1] = studentName;
-    //     studentCount++;
-    // }
+        // set the student name to the appropriate student num
+    }
+
+
+    void setStudentCount(int count) { 
+        studentCount = count;
+    }
+
+    int getStudentCountFromFile(string fileName)
+    {
+        string line;
+        int count = 0;
+        bool pastStudentHeaderLine = false; 
+
+        ifstream classFile(fileName);
+
+        while (getline(classFile, line)) 
+        {
+            if (pastStudentHeaderLine == true)
+            {
+                // The numbers are at the beginning of the line
+                stringstream ss(line);
+                int number;
+                ss >> number; // Extract the number
+
+                if (ss) // Check if extraction was successful
+                { 
+                    count++; // Increment the count of students
+                }
+            }
+            else
+            {
+                if (line == "Students: ")
+                {
+                    pastStudentHeaderLine = true;
+                }
+            }
+        }
+
+        classFile.close();
+
+        return count;
+    }   
 };
 

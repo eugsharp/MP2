@@ -73,6 +73,7 @@ void classroomTypeHandler(Classroom &classroom) {
         cout << "[1] Laboratory" << endl;
         cout << "[2] Small leture" << endl;
         cout << "[3] Big leture" << endl;
+        cout << "Enter your input: ";
         getline(cin, classroomChoice);
 
         valid = isValidInteger(classroomChoice) && withinBounds(classroomChoice, 1, 3);
@@ -93,6 +94,7 @@ void classroomTypeHandler(Classroom &classroom) {
             cout << "[1] Chemical" << endl;
             cout << "[2] Computer" << endl;
             cout << "[3] Mechanical" << endl;
+            cout << "Enter your input: ";
             getline(cin, laboratoryChoice);
 
             valid = isValidInteger(laboratoryChoice) && withinBounds(laboratoryChoice, 1, 3);

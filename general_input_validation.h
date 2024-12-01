@@ -5,6 +5,10 @@ using namespace std;
 
 bool isValidInteger(string input) {
 
+    if (input.empty()) { 
+        return false;
+    }
+
     for (int i = 0; i < input.size(); i++) { 
 
         if (!isdigit(input[i])) { // if the character isnt a digit, therefore the whole string isnt an integer
@@ -19,7 +23,7 @@ bool isValidInteger(string input) {
 bool withinBounds (string input, int lowerBound, int upperBound) { 
 
     if (!isValidInteger(input)) { 
-        cout << "\nInput" << input << "is not an integer. " << endl;
+        cout << "\nInput " << input << "is not an integer. " << endl;
         return false;
     }
 
