@@ -81,6 +81,7 @@ public:
     void setTeacherName(string teacher) {
         teacherName = teacher;
     }
+    
     string getSubject() {
         return subject;
     }
@@ -112,10 +113,6 @@ public:
     int getDaysPerWeek() { 
         return daysPerWeek;
     }
-
-    // subject counter
-
-    // check for section duplicates
 
     // add students to file
     void addStudentsToFile(string filename) { 
@@ -174,7 +171,6 @@ public:
             students[i][1] = sortedStudents[i][1];
         }
     }
-
 
     void setStudentCount(int count) { 
         studentCount = count;

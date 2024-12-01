@@ -464,8 +464,9 @@ bool createClassEligibility() {
     string studentList = "Student list.txt";
     
     // amt of classes isnt 20
-    if (numberOfClasses() >= 10) { 
-        cout << "\nNumber of classes already at 10. " << endl;
+    if (numberOfClasses() >= 20) { 
+        cout << "\nNumber of classes already at 20. " << endl;
+        return false;
     }
 
     // files exist
