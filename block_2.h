@@ -245,7 +245,7 @@ void deleteTeacher() {
     }  
     else {
         
-        cout << "Error: File for class " << lastNameInput << " " << firstNameInput << " cannot be deleted." << endl;
+        cout << "Error: File for teacher " << lastNameInput << " " << firstNameInput << " cannot be deleted." << endl;
     }
 
     ifstream teacherListFile("Teacher list.txt");
@@ -327,7 +327,6 @@ void teacherInfo() {
             break;
         }
 
-        cout << endl;
 
     } while (intInput != 5);
 }

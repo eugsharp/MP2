@@ -448,8 +448,6 @@ void classroomRegistration() {
             break;
         }
 
-        cout << endl;
-
     } while (intInput != 5);
     
 }

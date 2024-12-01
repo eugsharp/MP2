@@ -5,7 +5,7 @@
 
 class Classroom {
 private:
-    int roomNumber;
+    string roomNumber;
     string buildingCompleteName;
     string buildingAbbreviation;
     string classroomType;
@@ -16,7 +16,7 @@ public:
     Classroom() {}
 
     // Constructor with parameters
-    Classroom(int rn, string bcn, string ba, string ct, string lt) {
+    Classroom(string rn, string bcn, string ba, string ct, string lt) {
         roomNumber = rn;
         buildingCompleteName = bcn;
         buildingAbbreviation = ba;
@@ -24,7 +24,7 @@ public:
         laboratoryType = lt;
     }
 
-    int getRoomNumber() {
+    string getRoomNumber() {
         return roomNumber;
     }
 
@@ -44,7 +44,7 @@ public:
         return laboratoryType;
     }
 
-    void setRoomNumber(int rn) {
+    void setRoomNumber(string rn) {
         roomNumber = rn;
     }
 
@@ -57,10 +57,50 @@ public:
     }
 
     void setClassroomType(string ct) { 
-        classroomType = ct;
+        
+        // classroom type will either be 1, 2, or 3
+
+        if (ct[0] == '1') { 
+
+            classroomType = "Laboratory";
+        }
+        else if (ct[0] == '2') { 
+
+            classroomType = "Small lecture";
+        }
+        else if (ct[0] == '3') { 
+
+            classroomType = "Big lecture";
+        }
+        else { 
+
+            cout << "Invalid classroom choice for classroom type. " << endl;
+        }
     }
 
     void setLaboratoryType(string lt) {
-        laboratoryType = lt;
+
+        // lab type will either be 1, 2, 3, or N/A
+
+        if (lt[0] == '1') { 
+
+            laboratoryType = "Chemical";
+        }
+        else if (lt[0] == '2') { 
+
+            laboratoryType = "Computer";
+        }
+        else if (lt[0] == '3') { 
+
+            laboratoryType = "Mechanical";
+        }
+        else if (lt == "N/A") { 
+
+            laboratoryType = "N/A";
+        }
+        else { 
+
+            cout << "Invalid classroom choice for classroom type. " << endl;
+        }
     }
 };

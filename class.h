@@ -46,13 +46,13 @@ public:
         return classroom;
     }
 
-    void setClassroom(int rn, string bcn, string ba, string ct, string lt) { 
-        classroom.setRoomNumber(rn);
-        classroom.setBuildingName(bcn);
-        classroom.setBuildingAbbreviation(ba);
-        classroom.setClassroomType(ct);
-        classroom.setLaboratoryType(lt);
-    }
+    // void setClassroom(string rn, string bcn, string ba, string ct, string lt) { 
+    //     classroom.setRoomNumber(rn);
+    //     classroom.setBuildingName(bcn);
+    //     classroom.setBuildingAbbreviation(ba);
+    //     classroom.setClassroomType(ct);
+    //     classroom.setLaboratoryType(lt);
+    // }
 
     // string getClassroomName() {
     //     return classroomName;

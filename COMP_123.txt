@@ -1,0 +1,5 @@
+Room number: 123
+Building name (complete): Computer Building
+Building name (abbreviation): COMP
+Classroom type: Laboratory
+Laboratory classroom type: Computer
