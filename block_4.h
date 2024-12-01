@@ -174,7 +174,7 @@ void addClassroomToClass(Class &userClass) {
 
     while (getline(classroomListFile, line))
     {
-        if (line.find(classroom) != string::npos) { 
+        if (line == classroom) { 
 
             classroomExists = true;
         }
@@ -235,7 +235,7 @@ void addTeacherToClass(Class &userClass) {
 
     while (getline(teacherListFile, line))
     {
-        if (line.find(teacherName) != string::npos) { 
+        if (line == teacherName) { 
 
             teacherExists = true;
         }
@@ -255,8 +255,6 @@ void addTeacherToClass(Class &userClass) {
     userClass.setTeacherName(tempTeacher.getFullName()); // unordered due to specifications
 
 }
-
-
 
 void enlistStudents(Class &userClass, string filename) { 
 
@@ -317,7 +315,7 @@ void enlistStudents(Class &userClass, string filename) {
 
     while (getline(studentListFile, line))
     {
-        if (line.find(studentName) != string::npos) { 
+        if (line == studentName) { 
 
             studentExists = true;
         }
@@ -473,6 +471,22 @@ void createClass() {
     classFileAppend.close();
 
     // create class list/add to class list
+    if (checkIfFileExists("Class list.txt")) { 
+
+        ofstream classListFile ("Class list.txt", ios::app);
+
+        classListFile << className << endl;
+
+        classListFile.close();
+    } 
+    else {
+
+        ofstream classListFile ("Class list.txt");
+
+        classListFile << className << endl;
+
+        classListFile.close();
+    }
 }
 
 void displayAnotherClass(void (*displayClassFunction)()) { // use of pointer to use a function as a parameter
