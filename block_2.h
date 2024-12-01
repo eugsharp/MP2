@@ -252,7 +252,7 @@ void addTeacher(void (*teacherInfoFunction)()) {
         teacherFile << teacher.getFullAddress() << endl;
         teacherFile << teacher.getMobileNum() << endl;
         teacherFile << teacher.getSubjects() << endl;
-        teacherFile << "Teacher # " << teacher.getNum() << endl;
+        teacherFile << "Employee # " << teacher.getNum() << endl;
 
     }
     else {

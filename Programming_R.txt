@@ -1,0 +1,6 @@
+Subject: Programming
+Days: MTh
+Time: 08:00-09:30
+Section name: R
+Classroom: K 123
+Teacher: Roehl Briones

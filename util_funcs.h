@@ -137,3 +137,10 @@ string getStudentNameByFile(string studentNum, string fileName) {
     file.close();
     return "Student not found"; // Return this if the name wasn't found in the file
 }
+
+bool fileIsEmpty(string filename)
+{
+    ifstream file (filename);
+
+    return file.peek() == ifstream::traits_type::eof(); // determines if the beginning of the file is the same as the end of the file
+}

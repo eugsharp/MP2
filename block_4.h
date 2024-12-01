@@ -8,7 +8,6 @@ void subjectInputHandler(Class &userClass) {
     string subject;
     bool valid;
 
-
     do {
         cout << "\nEnter subject name: " << endl;
         cout << "[1] Programming" << endl;
@@ -178,11 +177,13 @@ void addClassroomToClass(Class &userClass) {
     }
 
     string line;
-    bool classroomExists;
+    bool classroomExists = false;
+
+
 
     while (getline(classroomListFile, line))
     {
-        if (line == classroom) { 
+        if (line.find(classroom) != string::npos && checkIfFileExists(abbreviation + "_" + roomNum + ".txt")) { 
 
             classroomExists = true;
         }
@@ -239,11 +240,11 @@ void addTeacherToClass(Class &userClass) {
     }
 
     string line;
-    bool teacherExists;
+    bool teacherExists = false;
 
     while (getline(teacherListFile, line))
     {
-        if (line == teacherName) { 
+        if (line.find(teacherName) != string::npos && checkIfFileExists(lastName + "_" + firstName + ".txt")) { 
 
             teacherExists = true;
         }
@@ -284,25 +285,25 @@ void enlistStudents(Class &userClass, string filename) {
     // check if already at 30 students
     if (numOfStudents >= MAX_STUDENTS) { 
 
-        cout << "Reached maximum student count. " << endl;
+        cout << "\nReached maximum student count. " << endl;
         return;
     }
 
     // show amt of students remaining
-    cout << "You have " << MAX_STUDENTS - numOfStudents << " remaining students to add. " << endl;
+    cout << "\nYou have " << MAX_STUDENTS - numOfStudents << " remaining students to add. " << endl;
 
     // ask for student last name
-    cout << "Enter student's last name: ";
+    cout << "\nEnter student's last name: ";
     getline(cin, lastName);
     tempStudent.setLastName(lastName);
 
     // ask for student first name
-    cout << "Enter student's first name: ";
+    cout << "\nEnter student's first name: ";
     getline(cin, firstName);
     tempStudent.setGivenName(firstName);
 
     // ask for student middle initial (if there is)
-    cout << "Enter student's middle initial (if student has none, leave blank): ";
+    cout << "\nEnter student's middle initial (if student has none, leave blank): ";
     getline(cin, middleInitial);
     tempStudent.setMiddleInitial(middleInitial);
 
@@ -315,24 +316,35 @@ void enlistStudents(Class &userClass, string filename) {
 
     if (!studentListFile) { 
 
-        cout << "Could not open Student list.txt" << endl;
+        cout << "\nCould not open Student list.txt" << endl;
     }
 
     string line;
-    bool studentExists;
+    bool studentExists = false;
+
+    // if (checkIfFileExists(lastName + "_" + firstName + ".txt")) { 
+    //     cout << "\nFile " << lastName + "_" + firstName + ".txt" << " exists." << endl;
+    // } 
+    // else { 
+    //     cout << "\nFile  " << lastName + "_" + firstName + ".txt" << " does not exist." << endl;
+    // }
 
     while (getline(studentListFile, line))
     {
-        if (line == studentName) { 
+        if (line.find(studentName) != string::npos && checkIfFileExists(lastName + "_" + firstName + ".txt")) { 
 
             studentExists = true;
         }
     }
 
+    // if (studentExists) { 
+    //     cout << "\nstudent exists" << endl;
+    // }
+
     // check if student is in student list (student list should exist because of validation in create class function)
     if (!studentExists) { 
         
-        cout << "Student " << studentName << " does not exist. " << endl;
+        cout << "\nStudent " << studentName << " does not exist. " << endl;
         cout << "Ensure the student you enter is in the student list. " << endl;
         cout << "Student list: " << endl;
         printAllLinesInFile("Student list.txt");
@@ -359,7 +371,7 @@ void enlistStudents(Class &userClass, string filename) {
         valid = isValidInteger(choiceToRepeat) && withinBounds(choiceToRepeat, 1, 2);
 
         if (!valid) { 
-            cout << "Invalid input. Please pick either 1 or 2. " << endl;
+            cout << "\nInvalid input. Please pick either 1 or 2. " << endl;
         }
 
     } while (!valid);
@@ -380,33 +392,65 @@ void enlistStudents(Class &userClass, string filename) {
     userClass.sortStudents();
 }
 
-void createClass(void (*classRegistrationFunction)()) {
+bool createClassEligibility() { 
 
-    Class userClass; 
+    string classroomList = "Classroom list.txt";
+    string teacherList = "Teacher list.txt";
+    string studentList = "Student list.txt";
+    
+    // amt of classes isnt 20
 
-    // check number of classes already (max 20)
-
+    // files exist
     // check if classroom list exists
-    if (!checkIfFileExists("Classroom list.txt")) { 
+    if (!checkIfFileExists(classroomList)) { 
 
         cout << "Classroom list does not exist. Please create a classroom first. " << endl;
     }
 
     // check if teacher list exists
-    if (!checkIfFileExists("Teacher list.txt")) { 
+    if (!checkIfFileExists(teacherList)) { 
 
         cout << "Teacher list does not exist. Please create a teacher first. " << endl;
     }
 
     // check if student list exists
-    if (!checkIfFileExists("Student list.txt")) { 
+    if (!checkIfFileExists(studentList)) { 
 
         cout << "Student list does not exist. Please create a student first. " << endl;
     }
 
-    // if any one of these are not satisfied, exit
-    if (!checkIfFileExists("Classroom list.txt") || !checkIfFileExists("Teacher list.txt") || !checkIfFileExists("Student list.txt")) { 
+    // if any one of these are not satisfied, ineligible
+    if (!checkIfFileExists(classroomList) || !checkIfFileExists(teacherList) || !checkIfFileExists(studentList)) { 
 
+        return false;
+    }
+
+    // files arent empty
+    if (fileIsEmpty(classroomList)) { 
+
+        cout << "Classroom list is empty. Please create a classroom first. " << endl;
+    }
+
+    if (fileIsEmpty(teacherList)) {
+        cout << "Teacher list is empty. Please add teachers." << endl;
+    }
+
+    if (fileIsEmpty(studentList)) {
+        cout << "Student list is empty. Please add students." << endl;
+    }
+
+    // if any one of these are not satisfied, ineligible
+    if (!checkIfFileExists(classroomList) || !checkIfFileExists(teacherList) || !checkIfFileExists(studentList)) { 
+
+        return false;
+    }
+}
+
+void createClass(void (*classRegistrationFunction)()) {
+
+    Class userClass; 
+
+    if (!createClassEligibility()) {
         return;
     }
     
@@ -638,7 +682,7 @@ void deleteClass() {
     // remove the class file
     if (remove(fileName.c_str()) == 0) {
 
-        cout << "Class" << className << " deleted successfully!" << endl; 
+        cout << "Class " << className << " deleted successfully!" << endl; 
     }  
     else {
         

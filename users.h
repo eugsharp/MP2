@@ -64,11 +64,11 @@ class Student : public User {
 
         string getFullName() { 
 
-            string fullName = lastName + ", " + givenName + " " + middleInitial;
+            string fullName = lastName + ", " + givenName;
 
             // add a dot if the middle initial is not empty
-            if (middleInitial != "") { 
-                fullName = fullName + ".";
+            if (!middleInitial.empty()) { 
+                fullName = fullName + " " + middleInitial + ".";
             }
 
             return fullName;
@@ -130,21 +130,21 @@ class Teacher : public User {
 
             // add a dot if the middle initial is not empty
             if (!middleInitial.empty()) { 
-                fullName = fullName + ".";
+                fullName = fullName + "." + " ";
             }
 
-            fullName = fullName + " " + lastName;
+            fullName = fullName + lastName;
 
             return fullName;
         }
 
         string getOrderedFullName() { // returns the name of the teacher in last, first, mid
 
-            string fullName = lastName + ", " + givenName + " " + middleInitial;
+            string fullName = lastName + ", " + givenName;
 
             // add a dot if the middle initial is not empty
             if (!middleInitial.empty()) { 
-                fullName = fullName + ".";
+                fullName = fullName + " " + middleInitial + ".";
             }
 
             return fullName;
