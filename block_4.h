@@ -805,7 +805,7 @@ void deleteClass() {
     deleteAnotherClass(deleteClass);
 }
 
-void classroomRegistration() { 
+void classRegistration() { 
 
     string input; 
     int intInput;
@@ -829,7 +829,7 @@ void classroomRegistration() {
         
         switch (intInput) {
         case 1:
-            createClass(classroomRegistration);
+            createClass(classRegistration);
             break;
 
         case 2:
