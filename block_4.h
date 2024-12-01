@@ -4,6 +4,64 @@
 
 #define MAX_STUDENTS 30
 
+int numberOfClasses() { 
+
+    int count = 0;
+
+    // opens class list file
+    string filename = "Class list.txt";
+
+    if (!checkIfFileExists(filename)) { 
+
+        return 0;
+    }
+
+    // counts how many lines have content
+    ifstream classList (filename);
+
+    string line;
+
+    while(getline(classList, line)) { 
+
+        if (line != "") { 
+
+            count ++;
+        }
+    }
+
+    return count;
+}
+
+int numberOfSubjects(string subject) { 
+
+    int count = 0;
+
+    // opens class list file 
+    string filename = "Class list.txt";
+
+    if (!checkIfFileExists(filename)) { 
+
+        return 0;
+    }
+
+    // counts how many times "subject" is found
+    ifstream classList (filename);
+
+    string line;
+
+    while(getline(classList, line)) { 
+
+        if (line.find(subject) != string::npos) { 
+
+            count ++;
+        }
+    }
+
+    return count;
+
+    return count;
+}
+
 void subjectInputHandler(Class &userClass) {
     string subject;
     bool valid;
@@ -23,13 +81,20 @@ void subjectInputHandler(Class &userClass) {
         cout << "Enter your input: ";
         getline(cin, subject);
 
-        valid = isValidInteger(subject) && withinBounds(subject, 1, 10); // if 2 of the subject already exists, no more
+        valid = isValidInteger(subject) && withinBounds(subject, 1, 10); 
 
         if (!valid) { 
             cout << "\nInvalid input. Please input a number from 1 to 10. " << endl;
         }
     }
     while(!valid);
+
+    if (numberOfSubjects(subjectNameFromOption(stoi(subject))) >= 2) { 
+
+        cout << "Maximum classes with this subject reached. Please select a different subject. " << endl;
+        subjectInputHandler(userClass);
+        return;
+    }
 
     userClass.setSubject(subject);
 }
@@ -399,24 +464,27 @@ bool createClassEligibility() {
     string studentList = "Student list.txt";
     
     // amt of classes isnt 20
+    if (numberOfClasses() >= 10) { 
+        cout << "\nNumber of classes already at 10. " << endl;
+    }
 
     // files exist
     // check if classroom list exists
     if (!checkIfFileExists(classroomList)) { 
 
-        cout << "Classroom list does not exist. Please create a classroom first. " << endl;
+        cout << "\nClassroom list does not exist. Please create a classroom first. " << endl;
     }
 
     // check if teacher list exists
     if (!checkIfFileExists(teacherList)) { 
 
-        cout << "Teacher list does not exist. Please create a teacher first. " << endl;
+        cout << "\nTeacher list does not exist. Please create a teacher first. " << endl;
     }
 
     // check if student list exists
     if (!checkIfFileExists(studentList)) { 
 
-        cout << "Student list does not exist. Please create a student first. " << endl;
+        cout << "\nStudent list does not exist. Please create a student first. " << endl;
     }
 
     // if any one of these are not satisfied, ineligible
@@ -428,15 +496,15 @@ bool createClassEligibility() {
     // files arent empty
     if (fileIsEmpty(classroomList)) { 
 
-        cout << "Classroom list is empty. Please create a classroom first. " << endl;
+        cout << "\nClassroom list is empty. Please create a classroom first. " << endl;
     }
 
     if (fileIsEmpty(teacherList)) {
-        cout << "Teacher list is empty. Please add teachers." << endl;
+        cout << "\nTeacher list is empty. Please add teachers." << endl;
     }
 
     if (fileIsEmpty(studentList)) {
-        cout << "Student list is empty. Please add students." << endl;
+        cout << "\nStudent list is empty. Please add students." << endl;
     }
 
     // if any one of these are not satisfied, ineligible
@@ -444,6 +512,8 @@ bool createClassEligibility() {
 
         return false;
     }
+
+    return true;
 }
 
 void createClass(void (*classRegistrationFunction)()) {

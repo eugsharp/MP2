@@ -62,6 +62,7 @@ void studentAddressHandler(Student &student) {
     string cityMunicipality;
     bool valid;
 
+    // input and validation for house number
     do
     {
         cout << "\nEnter House Number: ";
@@ -75,6 +76,7 @@ void studentAddressHandler(Student &student) {
 
     } while (!valid);
 
+    // input and validation for street name
     do
     {
         cout << "\nEnter Street Name (or leave blank if no street name): ";
@@ -84,6 +86,7 @@ void studentAddressHandler(Student &student) {
 
     } while (!valid);
 
+    // input and validation for subdivision/building name
     do
     {
         cout << "\nEnter Subdivision/Building Name (or leave blank if no subdivision/building name): ";
@@ -93,7 +96,7 @@ void studentAddressHandler(Student &student) {
 
     } while (!valid);
     
-
+    // input and validation for barangay
     do
     {
         cout << "\nEnter Barangay Name: ";
@@ -107,6 +110,7 @@ void studentAddressHandler(Student &student) {
 
     } while (!valid);
     
+    // input and validation for city
     do
     {
         cout << "\nEnter City/Municipality: ";
@@ -120,6 +124,7 @@ void studentAddressHandler(Student &student) {
 
     } while (!valid);
 
+    // set values in the student object
     student.setHouseNum(houseNumber);
     student.setStreetName(streetName);
     student.setBuildingName(subdivision);
@@ -132,6 +137,7 @@ void studentMobileHandler(Student &student) {
     string mobileNumber;
     bool valid;
 
+    // input and validation of mobile number
     do
     {
         cout << "\nEnter student's mobile number: ";
@@ -202,6 +208,7 @@ void addStudent(void (*studentRegistrationFunction)()) {
 }
 
 void displayStudent() { 
+
     string lastNameInput, firstNameInput;
     cout << "\nEnter student's last name: ";
     getline(cin, lastNameInput);
@@ -296,6 +303,7 @@ void deleteStudent() {
 }
 
 void studentRegistration() { 
+    
     string input; 
     int intInput;
 

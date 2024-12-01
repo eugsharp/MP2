@@ -1,7 +1,7 @@
 - also consider when deleting a student, teacher, or classroom, that that entry should be deleted from classroom
     - or, they cant delete if they have been inputted in the class 
 
-- loop in display and delete student
+- loop in display and delete student, teacher, classroom
 
 - input should be capitalized if lower case in classroom abbreviation
 
@@ -12,5 +12,3 @@
 - point out the use of pointers
 
 - consider the files existing but might be empty (block 4)
-
-- limit to 2 subjects
