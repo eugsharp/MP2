@@ -1,7 +1,7 @@
 #include <iostream>
 #include "block_1_and_2_input_validation.h"
 
-void studentNameHandler(Student &student) { 
+void studentNameHandler(Student &student, void (*studentRegistrationFunction)()) { 
     string lastName;
     string firstName;
     string middleInitial;
@@ -28,6 +28,14 @@ void studentNameHandler(Student &student) {
             cout << "Invalid given name. Ensure it contains no numbers and is not blank." << endl;
         }
     } while (!valid);
+
+    // check if a student of the same name already exists 
+    if (checkIfFileExists(lastName + "_" + firstName + ".txt")) { 
+
+        cout << "\nError: Student already exists. " << endl;
+        studentRegistrationFunction();
+        return;
+    }
 
     // Prompt for middle initial
     do {
@@ -140,11 +148,11 @@ void studentMobileHandler(Student &student) {
     student.setMobileNum(mobileNumber);
 }
 
-void addStudent() { 
+void addStudent(void (*studentRegistrationFunction)()) { 
     Student student;
 
     // student name input
-    studentNameHandler(student);
+    studentNameHandler(student, studentRegistrationFunction);
 
     // student address input
     studentAddressHandler(student);
@@ -308,7 +316,7 @@ void studentRegistration() {
         
         switch (intInput) {
         case 1:
-            addStudent();
+            addStudent(studentRegistration);
             break;
 
         case 2:

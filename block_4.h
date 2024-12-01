@@ -35,7 +35,7 @@ void subjectInputHandler(Class &userClass) {
     userClass.setSubject(subject);
 }
 
-void sectionInputHandler(Class &userClass) { 
+void sectionInputHandler(Class &userClass, void (*classRegistrationFunction)()) { 
     string section;
     bool valid;
 
@@ -46,13 +46,21 @@ void sectionInputHandler(Class &userClass) {
         cout << "Enter your input: ";
         getline(cin, section);
 
-        valid = allUpper(section); // not allowed repeat section
+        valid = allUpper(section); 
 
         if (!valid) { 
             cout << "\nInvalid input. Please use only capital letters. " << endl;
         }
 
     } while (!valid);
+
+    // check if a classroom of the same name already exists 
+    if (checkIfFileExists(userClass.getSubject() + "_" + section + ".txt")) { 
+
+        cout << "\nError: Class already exists. " << endl;
+        classRegistrationFunction();
+        return;
+    }
 
     userClass.setSectionName(section);
 }
@@ -372,7 +380,7 @@ void enlistStudents(Class &userClass, string filename) {
     userClass.sortStudents();
 }
 
-void createClass() {
+void createClass(void (*classRegistrationFunction)()) {
 
     Class userClass; 
 
@@ -406,7 +414,7 @@ void createClass() {
     subjectInputHandler(userClass);
 
     // section input 
-    sectionInputHandler(userClass);
+    sectionInputHandler(userClass, classRegistrationFunction);
 
     // days input 
     dayInputHandler(userClass);
@@ -487,6 +495,9 @@ void createClass() {
 
         classListFile.close();
     }
+
+    cout << "\nClassroom created: " << endl;
+    printAllLinesInFile(classFilename);
 }
 
 void displayAnotherClass(void (*displayClassFunction)()) { // use of pointer to use a function as a parameter
@@ -703,7 +714,7 @@ void classroomRegistration() {
         
         switch (intInput) {
         case 1:
-            createClass();
+            createClass(classroomRegistration);
             break;
 
         case 2:

@@ -1,5 +1,5 @@
 #include <iostream> 
-#include "main_menu.h"
+#include "grp2_mp2.h"
 
 int main() { 
     string input;

@@ -23,7 +23,7 @@ void roomHandler(Classroom &classroom) {
     classroom.setRoomNumber(roomNumber);
 }
 
-void buildingNameHandler(Classroom &classroom) { 
+void buildingNameHandler(Classroom &classroom, void (*classroomInfoFunction)()) { 
 
     string buildingName;
     string buildingAbbreviation;
@@ -58,6 +58,14 @@ void buildingNameHandler(Classroom &classroom) {
 
     classroom.setBuildingName(buildingName);
     classroom.setBuildingAbbreviation(buildingAbbreviation);
+
+    // check if a classroom of the same name already exists 
+    if (checkIfFileExists(buildingAbbreviation + "_" + classroom.getRoomNumber() + ".txt")) { 
+
+        cout << "\nError: Classroom already exists. " << endl;
+        classroomInfoFunction();
+        return;
+    }
 
 }
 
@@ -111,7 +119,7 @@ void classroomTypeHandler(Classroom &classroom) {
     classroom.setLaboratoryType(laboratoryChoice);
 }
 
-void addClassroom() { 
+void addClassroom(void (*classroomInfoFunction)()) { 
 
     Classroom classroom; 
 
@@ -119,7 +127,7 @@ void addClassroom() {
     roomHandler(classroom);
 
     // building name
-    buildingNameHandler(classroom);
+    buildingNameHandler(classroom, classroomInfoFunction);
 
     // classroom type
     classroomTypeHandler(classroom);
@@ -283,7 +291,7 @@ void classroomInfo() {
         
         switch (intInput) {
         case 1:
-            addClassroom();
+            addClassroom(classroomInfo);
             break;
 
         case 2:

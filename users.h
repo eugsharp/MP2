@@ -14,13 +14,8 @@ class User {
         string city;
         string mobileNum;
     public:
-        // default ructor
+        // default constructor
         User() {}
-
-        // ructor with parameters
-        User(string ln, string gn, string mi, string hn, string sn, string bn, string barn, string c, string mn)
-        : lastName(ln), givenName(gn), middleInitial(mi), houseNum(hn), streetName(sn),
-          buildingName(bn), barangayName(barn), city(c), mobileNum(mn) {}
 
         string getLastName()  { return lastName; }
         string getGivenName()  { return givenName; }
@@ -66,10 +61,6 @@ class Student : public User {
     public:
         // Default constructor for Student class
         Student() : User(), studentNum("") {}
-
-        // Constructor with parameters for Student class
-        Student(string ln, string gn, string mi, string hn, string sn, string bn, string barn, string c, string mn, string snum)
-        : User(ln, gn, mi, hn, sn, bn, barn, c, mn), studentNum(snum) {}
 
         string getFullName() { 
 
@@ -120,6 +111,7 @@ class Teacher : public User {
     private: 
         string subjects[10];
         string teacherNum;
+        int numOfSubjects;
 
     public: 
         // Default constructor for Teacher class
@@ -128,15 +120,8 @@ class Teacher : public User {
             for (int i = 0; i < 10; ++i) {
                 subjects[i] = "";
             }
-        }
 
-        // Constructor with parameters for Teacher class
-        Teacher(string ln, string gn, string mi, string hn, string sn, string bn, string barn, string c, string mn, string tnum)
-        : User(ln, gn, mi, hn, sn, bn, barn, c, mn), teacherNum(tnum) {
-            // Initialize subjects array to empty strings
-            for (int i = 0; i < 10; ++i) {
-                subjects[i] = "";
-            }
+            numOfSubjects = 0;
         }
 
         string getFullName() { // returns the name of the teacher in first, mid, last
@@ -194,5 +179,36 @@ class Teacher : public User {
 
         string getNum() { 
             return teacherNum;
+        }
+
+        void setSubject(string subject) { 
+
+            if (numOfSubjects >= 10) { 
+
+                cout << "Maximum subjects reached. " << endl;
+                return;
+            }
+            
+            subjects[numOfSubjects] = subjectNameFromOption(stoi(subject));
+            numOfSubjects++;
+        }
+
+        int getNumOfSubjects() { 
+            return numOfSubjects;
+        }
+
+        string getSubjects() {
+            string allSubjects = "";
+
+            for (int i = 0; i < numOfSubjects; i++)
+            {
+                allSubjects = allSubjects + subjects[i];
+
+                if (i != numOfSubjects - 1) {
+                    allSubjects = allSubjects + ", ";
+                }
+            }
+            
+            return allSubjects;
         }
 };

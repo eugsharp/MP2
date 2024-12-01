@@ -15,15 +15,6 @@ public:
     // constructor with no parameters
     Classroom() {}
 
-    // Constructor with parameters
-    Classroom(string rn, string bcn, string ba, string ct, string lt) {
-        roomNumber = rn;
-        buildingCompleteName = bcn;
-        buildingAbbreviation = ba;
-        classroomType = ct;
-        laboratoryType = lt;
-    }
-
     string getRoomNumber() {
         return roomNumber;
     }

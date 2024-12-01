@@ -1,11 +1,7 @@
 - also consider when deleting a student, teacher, or classroom, that that entry should be deleted from classroom
     - or, they cant delete if they have been inputted in the class 
 
-- consider removing the constructors with the parameters
-
 - loop in display and delete student
-
-- deal with duplicates in __ List.txt
 
 - input should be capitalized if lower case in classroom abbreviation
 
@@ -16,5 +12,3 @@
 - point out the use of pointers
 
 - consider the files existing but might be empty (block 4)
-
-- consider the incomplete case (proving COMP 12 to be true because it only found that)

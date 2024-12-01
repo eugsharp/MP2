@@ -1,7 +1,7 @@
 #include <iostream>
 #include "block_1.h"
 
-void teacherNameHandler(Teacher &teacher) { 
+void teacherNameHandler(Teacher &teacher, void (*teacherInfoFunction)()) { 
     string lastName;
     string firstName;
     string middleInitial;
@@ -28,6 +28,14 @@ void teacherNameHandler(Teacher &teacher) {
             cout << "Invalid given name. Ensure it contains no numbers and is not blank." << endl;
         }
     } while (!valid);
+
+    // check if a teacher of the same name already exists 
+    if (checkIfFileExists(lastName + "_" + firstName + ".txt")) { 
+
+        cout << "\nError: Teacher already exists. " << endl;
+        teacherInfoFunction();
+        return;
+    }
 
     // Prompt for middle initial
     do {
@@ -140,14 +148,97 @@ void teacherMobileHandler(Teacher &teacher) {
     teacher.setMobileNum(mobileNumber);
 }
 
-void addTeacher() { 
+void teacherSubjectHandler(Teacher &teacher, string inputHistory = "") { 
+    string choice;
+    bool valid;
+
+    do
+    {
+        cout << "\nEnter choice of subject: " << endl;
+        cout << "[1] Programming" << endl;
+        cout << "[2] Drafting" << endl;
+        cout << "[3] Data Analysis" << endl;
+        cout << "[4] Circuits 1" << endl;
+        cout << "[5] Circuits 2" << endl;
+        cout << "[6] OOP" << endl;
+        cout << "[7] Electronics 1" << endl;
+        cout << "[8] Electronics 2" << endl;
+        cout << "[9] Logic Circuits" << endl;
+        cout << "[10] Microprocessors" << endl;
+        cout << "Enter your input: ";
+        getline(cin, choice);
+
+        valid = isValidInteger(choice) && withinBounds(choice, 1, 10);
+
+        if (!valid) { 
+
+            cout << "Invalid input. Ensure you put a number from 1 to 10." << endl;
+        }
+
+    } while (!valid);
+
+    // consider duplicates
+    if (inputHistory.find(choice) != string::npos) { // a duplicate was found 
+
+        cout << "Your choice was already made. Please do not repeat subjects. " << endl;
+        teacherSubjectHandler(teacher, inputHistory);
+        return;
+    }
+
+    inputHistory = inputHistory + choice;
+
+    // add subject to teacher object
+    teacher.setSubject(choice);
+
+    if (teacher.getNumOfSubjects() >= 10) { 
+        cout << "Maximum subjects reached. " << endl;
+        return;
+    }
+    
+    do
+    {
+        cout << "Would you like to add another subject? " << endl;
+        cout << "[1] Yes" << endl;
+        cout << "[2] No" << endl;
+        cout << "Enter your input: ";
+        getline(cin, choice);
+
+        valid = isValidInteger(choice) && withinBounds(choice, 1, 2);
+
+        if (!valid) { 
+            cout << "Invalid input. Ensure you put either 1 or 2." << endl;
+        }
+        else {
+            switch (stoi(choice))
+            {
+            case 1:
+                teacherSubjectHandler(teacher, inputHistory);
+                return;
+                break;
+            
+            case 2:
+                return;
+                break;
+
+            // no need for default as input was limited to 1 and 2.
+            }
+        }
+
+        
+    } while (!valid);
+}
+
+void addTeacher(void (*teacherInfoFunction)()) { 
     Teacher teacher;
 
-    teacherNameHandler(teacher);
+    teacherNameHandler(teacher, teacherInfoFunction);
 
     teacherAddressHandler(teacher);
 
     teacherMobileHandler(teacher);
+
+    // teacher subjects
+    teacherSubjectHandler(teacher);
     
     teacher.generateNum();
 
@@ -160,6 +251,7 @@ void addTeacher() {
         teacherFile << teacher.getOrderedFullName() << endl;
         teacherFile << teacher.getFullAddress() << endl;
         teacherFile << teacher.getMobileNum() << endl;
+        teacherFile << teacher.getSubjects() << endl;
         teacherFile << "Teacher # " << teacher.getNum() << endl;
 
     }
@@ -304,7 +396,7 @@ void teacherInfo() {
         
         switch (intInput) {
         case 1:
-            addTeacher();
+            addTeacher(teacherInfo);
             break;
 
         case 2:
