@@ -256,9 +256,12 @@ void addTeacherToClass(Class &userClass) {
 
 }
 
+
+
 void enlistStudents(Class &userClass, string filename) { 
 
     string studentName;
+    string studentNumber;
     string lastName;
     string firstName; 
     string middleInitial;
@@ -270,8 +273,7 @@ void enlistStudents(Class &userClass, string filename) {
     Student tempStudent;
 
     // determine the amount of students so far
-    numOfStudents = userClass.getStudentCountFromFile(filename);
-    userClass.setStudentCount(numOfStudents);
+    numOfStudents = userClass.getStudentCount();
 
     // check if already at 30 students
     if (numOfStudents >= MAX_STUDENTS) { 
@@ -281,7 +283,7 @@ void enlistStudents(Class &userClass, string filename) {
     }
 
     // show amt of students remaining
-    cout << "You have " << MAX_STUDENTS - numOfStudents << " remaining" << endl;
+    cout << "You have " << MAX_STUDENTS - numOfStudents << " remaining students to add. " << endl;
 
     // ask for student last name
     cout << "Enter student's last name: ";
@@ -333,7 +335,11 @@ void enlistStudents(Class &userClass, string filename) {
     }
 
     // add name and number to list 
+    studentNumber = getStudentNumberByFile(studentName, "Student list.txt");
+    userClass.addStudent(studentNumber, studentName);
 
+    numOfStudents++;
+    userClass.setStudentCount(numOfStudents);
 
     // ask to add another student
     do
@@ -365,7 +371,7 @@ void enlistStudents(Class &userClass, string filename) {
     }
 
     // sort the student list
-    userClass.sortStudentList();
+    userClass.sortStudents();
 }
 
 void createClass() {
@@ -436,9 +442,9 @@ void createClass() {
     // add classroom to file
     ofstream classFileAppend (classFilename, ios::app);
 
-    if (classFile.is_open()) {
+    if (classFileAppend.is_open()) {
 
-        classFileAppend << "Classroom: " << userClass.getClassroom();
+        classFileAppend << "Classroom: " << userClass.getClassroom() << endl;
     }
     else { 
         
@@ -449,9 +455,9 @@ void createClass() {
     addTeacherToClass(userClass);
 
     // add teacher to file
-    if (classFile.is_open()) {
+    if (classFileAppend.is_open()) {
 
-        classFileAppend << "Teacher: " << userClass.getTeacherName();
+        classFileAppend << "Teacher: " << userClass.getTeacherName() << endl;
     }
     else { 
         

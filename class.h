@@ -14,10 +14,12 @@ class Class {
     string teacherName; // ordered
     string students[30][2]; // first for number, second for name
     int daysPerWeek;
-    int studentCount = 0;
+    int studentCount;
 
 public:
-    Class () {}
+    Class () {
+        studentCount = 0;
+    }
 
     void setSubject(string subj) {
 
@@ -103,6 +105,10 @@ public:
         return teacherName;
     }
 
+    int getStudentCount() { 
+        return studentCount;
+    }
+
     int getDaysPerWeek() { 
         return daysPerWeek;
     }
@@ -115,6 +121,17 @@ public:
     void addStudentsToFile(string filename) { 
 
         ofstream file (filename, ios::app);
+
+        if (!file.is_open()) { 
+            cout << "Could not open file " << filename << endl;
+            return;
+        }
+
+        for (int i = 0; i < studentCount; i++)
+        {
+            file << i+1 << ". " << students[i][0] << " " << students[i][1] << endl;
+        }
+        
     }
 
     void addStudent(string studentNum, string studentName) { 
@@ -125,17 +142,37 @@ public:
     // sort student list
     void sortStudents()
     {
+        // initialize an array of size student count to get 
+        string sortedStudents[30][2];
+        string studentNums[studentCount];
+        int studentNumsInt[studentCount];
+
         // get the student nums
+        for (int i = 0; i < studentCount; i++)
+        {
+            studentNums[i] = students[i][0];
 
-        // remove the "24-"
-
-        // convert to integer
-
+            // remove the "24-"
+            studentNums[i] = studentNums[i].erase(0,3); 
+            
+            // convert to integer
+            studentNumsInt[i] = stoi(studentNums[i]);
+        }
+    
         // sort integers
+        sort(studentNumsInt, studentCount);
 
         // add the "24-"
+        for (int i = 0; i < studentCount; i++)
+        {
+            sortedStudents[i][0] = "24-" + createNDigitNum(3, studentNumsInt[i]);
 
-        // set the student name to the appropriate student num
+            // set the student name to the appropriate student num
+            sortedStudents[i][1] = getStudentNameByFile(sortedStudents[i][0], "Student list.txt");
+
+            students[i][0] = sortedStudents[i][0];
+            students[i][1] = sortedStudents[i][1];
+        }
     }
 
 

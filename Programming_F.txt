@@ -1,0 +1,9 @@
+Subject: Programming
+Days: MTh
+Time: 08:00-09:30
+Section name: F
+Classroom: COMP 12
+Teacher: Mary  Gineta
+1. 24-001 Briones, Eugene 
+2. 24-002 Smith, John A.
+3. 24-003 Adams, Michael S.

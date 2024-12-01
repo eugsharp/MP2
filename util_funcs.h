@@ -84,3 +84,56 @@ bool checkIfFileExists(string filename) {
         return false;
     }
 }
+
+
+string getStudentNumberByFile(string studentName, string fileName) {
+    ifstream file(fileName);
+    string line;
+    
+    // Check if the file was successfully opened
+    if (!file.is_open()) {
+        cout << "Error: Could not open file!" << endl;
+        return "";
+    }
+
+    // Read through each line in the file
+    while (getline(file, line)) {
+        
+        // If the student name is found in the line
+        if (line.find(studentName) != string::npos) {
+            // Extract the student number from the start of the line (assumes the number is the first part of the line)
+            string studentNumber = line.substr(0, 6); 
+            file.close();
+            return studentNumber;
+        }
+    }
+
+    file.close();
+    return "Student not found"; // Return this if the name wasn't found in the file
+}
+
+string getStudentNameByFile(string studentNum, string fileName) {
+    ifstream file(fileName);
+    string line;
+    
+    // Check if the file was successfully opened
+    if (!file.is_open()) {
+        cout << "Error: Could not open file!" << endl;
+        return "";
+    }
+
+    // Read through each line in the file
+    while (getline(file, line)) {
+        
+        // If the student name is found in the line
+        if (line.find(studentNum) != string::npos) {
+            // Extract the student number from the start of the line (assumes the number is the first part of the line)
+            string studentName = line.erase(0, 7); 
+            file.close();
+            return studentName;
+        }
+    }
+
+    file.close();
+    return "Student not found"; // Return this if the name wasn't found in the file
+}

@@ -16,3 +16,5 @@
 - point out the use of pointers
 
 - consider the files existing but might be empty (block 4)
+
+- consider the incomplete case (proving COMP 12 to be true because it only found that)
